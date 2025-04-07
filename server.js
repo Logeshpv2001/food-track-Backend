@@ -7,10 +7,10 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-mongoose.connect(process.env.MONGO_URI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-});
+mongoose
+  .connect(process.env.MONGO_URI)
+  .then(() => console.log("MongoDB connected"))
+  .catch((err) => console.error("MongoDB connection error:", err));
 
 const foodSchema = new mongoose.Schema({
   date: String,
@@ -52,7 +52,10 @@ app.delete("/api/foods/:id", async (req, res) => {
   res.json({ success: true });
 });
 
-app.listen(5000, () => console.log("Server running on port 5000"));
+// app.listen(5000, () => console.log("Server running on port 5000"));
+const PORT = process.env.PORT || 5001;
+
+app.listen(PORT, () => console.log(`Server Running on ${PORT}`));
 
 // Don't forget to create a .env file in backend directory:
 // MONGO_URI=your_mongodb_connection_string
